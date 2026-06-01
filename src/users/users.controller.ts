@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { CreateUserDTO } from "src/tasks/dto/create-users.dto";
 import { UsersService } from "./users.service";
@@ -26,14 +27,13 @@ export class UsersController {
   register(@Body() dto: CreateUserDTO) {
     return this.usersService.register(dto);
   }
-  // @Post("register")
-  // register(@Body() body: any) {
-  //   console.log('BODY:', body);
+  @Get()
+  findAll() {
+    return this.usersService.findAll();
+  }
+  @Get(":id")
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.getById(id)
+  }
 
-  //   return body;
-  // }
-  // @Get("register")
-  // getInfo() {
-  //   return "I am Here"
-  // }
 }
