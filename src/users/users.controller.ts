@@ -9,7 +9,7 @@ import {
   ValidationPipe,
   ParseIntPipe,
 } from "@nestjs/common";
-import { CreateUserDTO } from "src/tasks/dto/create-users.dto";
+import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UsersService } from "./users.service";
 interface Users {
   username: string;

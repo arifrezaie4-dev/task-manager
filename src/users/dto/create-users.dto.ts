@@ -2,11 +2,11 @@ import { IsEmail, IsString, MinLength } from "class-validator";
 
 export class CreateUserDTO {
     @IsString()
-    username
+    username!: string
 
     @IsEmail()
-    email
+    email!: string
 
     @MinLength(5)
-    password
+    password!: string
 }
