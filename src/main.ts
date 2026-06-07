@@ -13,6 +13,11 @@ async function bootstrap() {
     }),
   );
   main.useGlobalFilters(new HttpExceptionFilter());
+  main.enableCors({
+    origin: "*",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true  
+  })
   await main.listen(3000);
   console.log("The Server Is Running On Port 3000...");
 }
