@@ -15,7 +15,8 @@ export class TasksService {
       },
     });
     return {
-      message: "Task Created",
+      success: true,
+      message: "Task Created successfully",
       data: task,
     };
   }
@@ -34,7 +35,8 @@ export class TasksService {
       },
     });
     return {
-      message: "Tasks Found",
+      success: true,
+      message: "Tasks Found successfully",
       data: tasks,
     };
   }
@@ -64,7 +66,8 @@ export class TasksService {
       },
     });
     return {
-      message: "Task Found",
+      success: true,
+      message: "Task Found successfully",
       data: task,
     };
   }
@@ -85,7 +88,8 @@ export class TasksService {
       },
     });
     return {
-      message: "Task Edited",
+      success: true,
+      message: "Task Updated successfully",
       data: task,
     };
   }
@@ -104,6 +108,7 @@ export class TasksService {
       },
     });
     return {
+      success: true,
       message: "Task Deleted Successfully.",
     };
   }

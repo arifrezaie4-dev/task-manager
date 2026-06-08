@@ -34,8 +34,9 @@ export class UsersService {
       },
     });
     return {
+      success: true,
       message: "User created successfully",
-      data: user,
+      data: user
     };
   }
   async findAll() {
@@ -51,8 +52,9 @@ export class UsersService {
       },
     });
     return {
-      message: "All Users Found",
-      data: user,
+      success: true,
+      message: "Users Found successfully.",
+      data: user
     };
   }
   async getById(id: number) {
@@ -76,8 +78,9 @@ export class UsersService {
       },
     });
     return {
-      message: "User Found",
-      data: user,
+      success: true,
+      message: "User Found successfully",
+      data: user
     };
   }
   async updateUser(id: number, body: UpdateUserDto) {
@@ -97,7 +100,8 @@ export class UsersService {
       },
     });
     return {
-      message: "User Edited", 
+      success: true,
+      message: "User Updated successfully",
       data: user
     }
   }
@@ -116,8 +120,8 @@ export class UsersService {
       },
     });
     return {
-      message: "User Deleted Successfully.", 
-
+      success: true,
+      message: "User deleted successfully",
     }
   }
 }

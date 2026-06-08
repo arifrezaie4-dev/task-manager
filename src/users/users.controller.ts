@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   ParseIntPipe,
   Put,
+  HttpCode,
 } from "@nestjs/common";
 import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UsersService } from "./users.service";
@@ -26,6 +27,7 @@ interface Users {
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Post("register")
+    @HttpCode(201)
   register(@Body() dto: CreateUserDTO) {
     return this.usersService.register(dto);
   }

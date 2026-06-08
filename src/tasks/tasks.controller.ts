@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Post,
@@ -16,6 +17,7 @@ import { UpdateTaskDto } from "./dto/updateTask.dto";
 export class TasksController {
   constructor(private tasksService: TasksService) {}
   @Post()
+  @HttpCode(201)
   createTask(@Body() body: CreateTaskDto) {
     return this.tasksService.createTask(body);
   }
