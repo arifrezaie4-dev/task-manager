@@ -14,6 +14,7 @@ import {
 import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { ApiTags } from "@nestjs/swagger";
 interface Users {
   username: string;
   email: string;
@@ -22,7 +23,7 @@ interface Users {
 // import { UsersService } from './users.service';
 // import { CreateUserDto } from './dto/create-user.dto';
 // import { UpdateUserDto } from './dto/update-user.dto';
-
+@ApiTags('Users')
 @Controller("users")
 export class UsersController {
   constructor(private usersService: UsersService) {}
