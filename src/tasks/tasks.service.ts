@@ -7,6 +7,16 @@ import { UpdateTaskDto } from "./dto/updateTask.dto";
 export class TasksService {
   constructor(private prisma: PrismaService) {}
   async createTask(dto: CreateTaskDto) {
+    const existing = await this.prisma.task.findFirst({
+      where: {
+        title: dto.title
+      }
+    })
+
+    if(existing) {
+      throw new BadRequestException("the task with this title already exists.")
+    }
+
     const task = await this.prisma.task.create({
       data: {
         title: dto.title,
@@ -41,7 +51,7 @@ export class TasksService {
     };
   }
   async getTask(id: number) {
-    const existing = await this.prisma.task.findFirst({
+    const existing = await this.prisma.task.findUnique({
       where: {
         id,
       },
@@ -72,7 +82,7 @@ export class TasksService {
     };
   }
   async updateTask(id: number, body: UpdateTaskDto) {
-    const existing = await this.prisma.task.findFirst({
+    const existing = await this.prisma.task.findUnique({
       where: {
         id,
       },
@@ -94,7 +104,7 @@ export class TasksService {
     };
   }
   async deleteTask(id: number) {
-    const existing = await this.prisma.task.findFirst({
+    const existing = await this.prisma.task.findUnique({
       where : {
         id
       }
