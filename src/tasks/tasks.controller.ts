@@ -8,11 +8,13 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { CreateTaskDto } from "./dto/CreateTasks.dto";
 import { UpdateTaskDto } from "./dto/updateTask.dto";
 import { ApiTags } from "@nestjs/swagger";
+import { AuthGuard } from "src/auth/auth.guard";
 @ApiTags('Tasks')
 @Controller("tasks")
 export class TasksController {
@@ -23,6 +25,7 @@ export class TasksController {
     return this.tasksService.createTask(body);
   }
   @Get()
+  @UseGuards(AuthGuard)
   findAllTasks() {
     return this.tasksService.getTasks();
   }
