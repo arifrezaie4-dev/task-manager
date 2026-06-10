@@ -19,6 +19,6 @@ export class CreateUserDTO {
     example: "password123",
     description: "Minimum 6 characters",
   })
-  @MinLength(5)
+  @MinLength(6)
   password!: string;
 }
