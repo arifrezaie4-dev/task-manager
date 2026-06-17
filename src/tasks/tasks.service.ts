@@ -30,8 +30,11 @@ export class TasksService {
       data: task,
     };
   }
-  async getTasks() {
+  async getTasks(userId: number) {
     const tasks = await this.prisma.task.findMany({
+      where: {
+        userId
+      },
       include: {
         user: {
           select: {

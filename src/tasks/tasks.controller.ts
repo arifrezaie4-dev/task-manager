@@ -9,12 +9,13 @@ import {
   Post,
   Put,
   UseGuards,
+  Request
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { CreateTaskDto } from "./dto/CreateTasks.dto";
 import { UpdateTaskDto } from "./dto/updateTask.dto";
 import { ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "@nestjs/passport";
 @ApiTags('Tasks')
 @Controller("tasks")
 export class TasksController {
@@ -25,9 +26,10 @@ export class TasksController {
     return this.tasksService.createTask(body);
   }
   @Get()
-  @UseGuards(AuthGuard)
-  findAllTasks() {
-    return this.tasksService.getTasks();
+  @UseGuards(AuthGuard('jwt'))
+  findAllTasks(@Request() req) {
+    
+    return this.tasksService.getTasks(req.user.id);
   }
   @Get(":id")
   findTask(@Param("id", ParseIntPipe) id: number) {

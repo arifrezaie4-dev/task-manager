@@ -2,6 +2,8 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import * as bcrypt from "bcrypt";
+
 interface User {
   id: number;
   username: string;
@@ -12,6 +14,7 @@ interface User {
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
   async register(dto: CreateUserDTO) {
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
     const existing = await this.prisma.user.findFirst({
       where: {
         OR: [{ email: dto.email }, { username: dto.username }],
@@ -24,7 +27,7 @@ export class UsersService {
       data: {
         username: dto.username,
         email: dto.email,
-        password: dto.password,
+        password: hashedPassword,
       },
       select: {
         username: true,
@@ -123,5 +126,8 @@ export class UsersService {
       success: true,
       message: "User deleted successfully",
     }
+  }
+  async findOneByEmail(email: string) {
+    return await this.prisma.user.findUnique({ where: { email } });
   }
 }
