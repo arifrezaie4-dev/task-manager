@@ -6,10 +6,12 @@ import { UpdateTaskDto } from "./dto/updateTask.dto";
 @Injectable()
 export class TasksService {
   constructor(private prisma: PrismaService) {}
-  async createTask(dto: CreateTaskDto) {
+  async createTask(dto: CreateTaskDto, userId: number) {
     const existing = await this.prisma.task.findFirst({
       where: {
-        title: dto.title
+        title: dto.title,
+        description: dto.description,
+        userId: userId
       }
     })
 
@@ -21,7 +23,7 @@ export class TasksService {
       data: {
         title: dto.title,
         description: dto.description,
-        userId: dto.userId,
+        userId: userId,
       },
     });
     return {

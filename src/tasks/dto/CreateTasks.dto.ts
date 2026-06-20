@@ -13,9 +13,6 @@ export class CreateTaskDto {
   @IsOptional()
   @IsString()
   description?: string;
-
-  @IsInt()
-  userId!: number;
   @IsOptional()
   @ApiProperty({
     example: false,

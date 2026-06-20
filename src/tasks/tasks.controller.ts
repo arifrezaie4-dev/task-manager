@@ -21,9 +21,10 @@ import { AuthGuard } from "@nestjs/passport";
 export class TasksController {
   constructor(private tasksService: TasksService) {}
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @HttpCode(201)
-  createTask(@Body() body: CreateTaskDto) {
-    return this.tasksService.createTask(body);
+  createTask(@Body() body: CreateTaskDto, @Request() req) {
+    return this.tasksService.createTask(body, req.user.id);
   }
   @Get()
   @UseGuards(AuthGuard('jwt'))

@@ -25,7 +25,7 @@ async validateUser(email: string, password: string) {
 async login(user: any) {
   const payload = { email: user.email, sub: user.id };
   return {
-    access_token: this.jwtService.sign(payload), // تولید توکن نهایی
+    access_token: this.jwtService.sign(payload),
   };
 }
 }
