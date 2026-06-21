@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Put,
   HttpCode,
+  UseGuards,
 } from "@nestjs/common";
 import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UsersService } from "./users.service";
@@ -17,6 +18,8 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { Roles } from "src/auth/roles.decorator";
 import { Role } from "src/auth/roles.enum";
+import { RoleGuard } from "src/auth/Guards/roles.guard";
+import { AuthGuard } from "@nestjs/passport";
 interface Users {
   username: string;
   email: string;
@@ -35,6 +38,7 @@ export class UsersController {
     return this.usersService.register(dto);
   }
   @Get()
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Roles(Role.ADMIN)
   findAll() {
     return this.usersService.findAll();
