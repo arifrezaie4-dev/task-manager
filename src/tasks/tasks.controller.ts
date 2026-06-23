@@ -16,6 +16,9 @@ import { CreateTaskDto } from "./dto/CreateTasks.dto";
 import { UpdateTaskDto } from "./dto/updateTask.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
+import { RoleGuard } from "src/auth/Guards/roles.guard";
+import { Roles } from "src/auth/roles.decorator";
+import { Role } from "src/auth/roles.enum";
 @ApiTags('Tasks')
 @Controller("tasks")
 export class TasksController {
@@ -27,7 +30,8 @@ export class TasksController {
     return this.tasksService.createTask(body, req.user.id);
   }
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Roles(Role.ADMIN)
   findAllTasks(@Request() req) {
     
     return this.tasksService.getTasks(req.user.id);
