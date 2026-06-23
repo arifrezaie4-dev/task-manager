@@ -11,28 +11,67 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
 enum Role {
   USER
   ADMIN
 }
-model User {
-  id        Int      @id @default(autoincrement())
-  username  String
-  email     String   @unique
-  password  String
-  role Role @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tasks Task[]
+
+enum TeamRole {
+  OWNER
+  ADMIN
+  MEMBER
 }
+
+model User {
+  id          Int          @id @default(autoincrement())
+  username    String
+  email       String       @unique
+  password    String
+  role        Role         @default(USER)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  tasks       Task[]
+  teamMembers TeamMember[]
+}
+
 model Task {
-  id        Int      @id @default(autoincrement())
-  title String
+  id          Int      @id @default(autoincrement())
+  title       String
   description String?
-  isDone Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isDone      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  teamId Int?
+
+  team Team? @relation(fields: [teamId], references: [id])
+}
+
+model Team {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members TeamMember[]
+  tasks   Task[]
+}
+
+model TeamMember {
+  id       Int      @id @default(autoincrement())
+  role     TeamRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+
+  userId Int
+  teamId Int
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
 }
