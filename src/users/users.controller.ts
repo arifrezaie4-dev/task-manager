@@ -16,7 +16,7 @@ import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { ApiTags } from "@nestjs/swagger";
-import { Roles } from "src/auth/roles.decorator";
+import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "src/auth/roles.enum";
 import { RoleGuard } from "src/auth/Guards/roles.guard";
 import { AuthGuard } from "@nestjs/passport";

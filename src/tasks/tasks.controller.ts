@@ -17,7 +17,7 @@ import { UpdateTaskDto } from "./dto/updateTask.dto";
 import { ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
 import { RoleGuard } from "src/auth/Guards/roles.guard";
-import { Roles } from "src/auth/roles.decorator";
+import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "src/auth/roles.enum";
 @ApiTags('Tasks')
 @Controller("tasks")

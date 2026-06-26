@@ -1,8 +1,14 @@
-import { BadRequestException, ForbiddenException, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateTeamDto } from "./dto/create-team.dto";
 import { Role, TeamRole } from "@prisma/client";
 import { AddMemberDto } from "./dto/add-member.dto";
+import { UpdateTeamDto } from "./dto/update-team.dto";
 
 @Injectable()
 export class TeamsService {
@@ -62,5 +68,70 @@ export class TeamsService {
         },
       },
     });
+  }
+  async getTeamById(teamId: number, userId: number) {
+    const team = await this.prisma.team.findFirst({
+      where: {
+        id: teamId,
+        members: {
+          some: {
+            userId,
+          },
+        },
+      },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!team) {
+      throw new NotFoundException("Team not found or access denied");
+    }
+    return team;
+  }
+  async updateTeam(teamId: number, userId: number, dto: UpdateTeamDto) {
+    const ownerShip = await this.prisma.teamMember.findFirst({
+      where: {
+        teamId,
+        userId,
+        role: TeamRole.OWNER,
+      },
+    });
+    if (!ownerShip) {
+      throw new ForbiddenException("Only owner can update this team");
+    }
+    return await this.prisma.team.update({
+      where: {
+        id: teamId,
+      },
+      data: {
+        name: dto.name,
+        description: dto.description,
+      },
+    });
+  }
+  async deleteTeam(teamId: number, userId: number) {
+    const ownerShip = await this.prisma.teamMember.findFirst({
+      where: {
+        teamId,
+        userId,
+        role: TeamRole.OWNER,
+      },
+    });
+    if (!ownerShip) {
+      throw new ForbiddenException("Only owner can delete this team");
+    }
+    await this.prisma.team.delete({
+      where: { id: teamId },
+    });
+    return { message: "team deleted successfully." };
   }
 }
