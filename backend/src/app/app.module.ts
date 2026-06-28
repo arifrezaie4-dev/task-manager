@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
 import { TasksModule } from "src/tasks/tasks.module";
 import { UsersModule } from "src/users/users.module";
 import { PrismaModule } from "src/prisma/prisma.module";
@@ -18,6 +17,6 @@ import { ConfigModule } from "@nestjs/config";
       isGlobal: true,
     }),
   ],
-  controllers: [AppController],
+  controllers: [],
 })
 export class AppModule {}

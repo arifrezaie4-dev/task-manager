@@ -20,9 +20,9 @@ async function bootstrap() {
     credentials: true  
   })
   const config = new DocumentBuilder()
-  .setTitle('Team Task Manager API')
-  .setDescription('API documentation for the Task Manager project')
-  .setVersion('1.0')
+  .setTitle('TaskFlow API')
+  .setDescription('REST API for TaskFlow Team Task Manager')
+  .setVersion('1.0.0')
   .build();
 
 const document = SwaggerModule.createDocument(main, config);
