@@ -23,6 +23,7 @@ async function bootstrap() {
   .setTitle('TaskFlow API')
   .setDescription('REST API for TaskFlow Team Task Manager')
   .setVersion('1.0.0')
+  .addBearerAuth()
   .build();
 
 const document = SwaggerModule.createDocument(main, config);
