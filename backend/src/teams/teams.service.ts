@@ -14,7 +14,15 @@ import { UpdateTeamDto } from "./dto/update-team.dto";
 export class TeamsService {
   constructor(private prisma: PrismaService) {}
   async createTeam(userId: number, name: string, description?: string) {
-    return await this.prisma.team.create({
+    const existing = await this.prisma.team.findFirst({
+      where: {
+        name,
+      },
+    });
+    if (existing) {
+      throw new BadRequestException("The team already exists")
+    }
+    const team = await this.prisma.team.create({
       data: {
         name: name,
         description: description,
@@ -26,6 +34,11 @@ export class TeamsService {
         },
       },
     });
+    return {
+      success: true,
+      message: "Team created successfully",
+      data: team,
+    };
   }
   async addMember(dto: AddMemberDto, role: TeamRole) {
     const admin = await this.prisma.teamMember.findFirst({

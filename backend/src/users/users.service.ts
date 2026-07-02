@@ -1,15 +1,13 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import * as bcrypt from "bcrypt";
 
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  password: string;
-}
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
@@ -39,7 +37,7 @@ export class UsersService {
     return {
       success: true,
       message: "User created successfully",
-      data: user
+      data: user,
     };
   }
   async findAll() {
@@ -57,19 +55,19 @@ export class UsersService {
     return {
       success: true,
       message: "Users Found successfully.",
-      data: user
+      data: user,
     };
   }
   async getById(id: number) {
-        const existing = await this.prisma.user.findUnique({
-          where : {
-            id
-          }
-        })
-        if (!existing) {
-          throw new NotFoundException("The user with this id doesn't exist.")
-        }
-    const user =await this.prisma.user.findUnique({
+    const existing = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!existing) {
+      throw new NotFoundException("The user with this id doesn't exist.");
+    }
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
       },
@@ -83,41 +81,53 @@ export class UsersService {
     return {
       success: true,
       message: "User Found successfully",
-      data: user
+      data: user,
     };
   }
-  async updateUser(id: number, body: UpdateUserDto) {
+  async updateUser(userId: number, body: UpdateUserDto, ) {
     const existing = await this.prisma.user.findUnique({
-      where : {
-        id
-      }
-    })
-    if (!existing) {
-      throw new NotFoundException("The user with this id doesn't exist to edit.")
-    }
-    const user = await this.prisma.user.update({
-      where: { id },
-      data: {
-        username: body.username,
-        password: body.password,
+      where: {
+        id: userId,
       },
     });
+    if (!existing) {
+      throw new NotFoundException(
+        "The user with this id doesn't exist to edit.",
+      );
+    }
+
+    const data: UpdateUserDto = {};
+
+    if (body.username) {
+      data.username = body.username;
+    }
+
+    if (body.password) {
+      data.password = await bcrypt.hash(body.password, 10);
+    }
+
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data,
+    });
+    const { password, ...safeUser } = user;
+
     return {
       success: true,
-      message: "User Updated successfully",
-      data: user
-    }
+      message: "User updated successfully",
+      data: safeUser,
+    };
   }
   async deleteUser(id: number) {
     const existing = await this.prisma.user.findUnique({
-      where : {
-        id
-      }
-    })
+      where: {
+        id,
+      },
+    });
     if (!existing) {
-      throw new NotFoundException(`The User with Id ${id} Not Found!`)
+      throw new NotFoundException(`The User with Id ${id} Not Found!`);
     }
-    const user =  await this.prisma.user.delete({
+    const user = await this.prisma.user.delete({
       where: {
         id,
       },
@@ -125,7 +135,7 @@ export class UsersService {
     return {
       success: true,
       message: "User deleted successfully",
-    }
+    };
   }
   async findOneByEmail(email: string) {
     return await this.prisma.user.findUnique({ where: { email } });

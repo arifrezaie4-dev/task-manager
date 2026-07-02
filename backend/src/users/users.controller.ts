@@ -3,44 +3,49 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
-  ValidationPipe,
   ParseIntPipe,
   Put,
-  HttpCode,
   UseGuards,
 } from "@nestjs/common";
 import { CreateUserDTO } from "src/users/dto/create-users.dto";
 import { UsersService } from "./users.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "src/auth/roles.enum";
 import { RoleGuard } from "src/auth/Guards/roles.guard";
 import { AuthGuard } from "@nestjs/passport";
-interface Users {
-  username: string;
-  email: string;
-  password: string;
-}
-// import { UsersService } from './users.service';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUser } from "src/auth/decorators/get-user.decorator";
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Post("register")
-  @ApiResponse({
-    status: 201,
-    description: 'User created successfully',
+  @ApiOperation({
+    summary: "Register a new user",
   })
-  @HttpCode(201)
-    @ApiOperation({
-      summary: 'Creates a User',
-    })
+  @ApiCreatedResponse({
+    description: "User created successfully.",
+  })
+  @ApiBadRequestResponse({
+    description: "Validation failed.",
+  })
+  @ApiConflictResponse({
+    description: "Email already exists.",
+  })
   register(@Body() dto: CreateUserDTO) {
     return this.usersService.register(dto);
   }
@@ -48,28 +53,76 @@ export class UsersController {
   @UseGuards(AuthGuard("jwt"), RoleGuard)
   @Roles(Role.ADMIN)
   @ApiOperation({
-    summary: 'Finds all users',
+    summary: "Retrieve all users",
+  })
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: "Users retrieved successfully.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
+  })
+  @ApiForbiddenResponse({
+    description: "Access denied.",
   })
   findAll() {
     return this.usersService.findAll();
   }
   @Get(":id")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @ApiOperation({
-    summary: 'Finds a user',
+    summary: "Retrieve user by ID",
+  })
+  @ApiOkResponse({
+    description: "User retrieved successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "User not found.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
   })
   findOne(@Param("id", ParseIntPipe) id: number) {
     return this.usersService.getById(id);
   }
-  @Put(":id")
+  @Put("me")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
   @ApiOperation({
-    summary: 'Updates a user',
+    summary: "Update current user's profile",
   })
-  editUser(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateUserDto) {
-    return this.usersService.updateUser(id, body);
+  @ApiOkResponse({
+    description: "User updated successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "User not found.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
+  })
+  updateProfile(
+
+    @GetUser("id") userId: number,
+    @Body() body: UpdateUserDto,
+  ) {
+    return this.usersService.updateUser(userId, body );
   }
   @Delete(":id")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"), RoleGuard)
+  @Roles(Role.ADMIN)
   @ApiOperation({
-    summary: 'Deletes a user',
+    summary: "Delete user",
+  })
+  @ApiOkResponse({
+    description: "User deleted successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "User not found.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
   })
   deleteUser(@Param("id", ParseIntPipe) id: number) {
     return this.usersService.deleteUser(id);

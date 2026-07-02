@@ -22,7 +22,8 @@ export class CreateTaskDto {
   @IsBoolean()
   @ApiProperty({
     example: false,
-    description: "Task completion status",
+    description: "Whether the task has been completed",
+    required: false,
   })
   isDone?: boolean;
 }

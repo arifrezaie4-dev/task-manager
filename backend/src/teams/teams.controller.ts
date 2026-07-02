@@ -15,41 +15,63 @@ import { AuthGuard } from "@nestjs/passport";
 import { CreateTeamDto } from "./dto/create-team.dto";
 import { GetUser } from "src/auth/decorators/get-user.decorator";
 import { UpdateTeamDto } from "./dto/update-team.dto";
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from "@nestjs/swagger";
+@ApiBearerAuth()
 @UseGuards(AuthGuard("jwt"))
-@ApiTags('Teams')
+@ApiTags("Teams")
 @Controller("teams")
 export class TeamsController {
   constructor(private teamsService: TeamsService) {}
   @Post()
-  @ApiResponse({
-    status: 201,
-    description: 'Team created successfully',
+  @ApiCreatedResponse({
+    description: "Team created successfully.",
   })
-    @ApiOperation({
-      summary: 'Creates a team',
-    })
-  create(@Req() req, @Body() body: CreateTeamDto) {
-    console.log("REQ USER:", req.user);
-    return this.teamsService.createTeam(
-      req.user.id,
-      body.name,
-      body.description,
-    );
+  @ApiBadRequestResponse({
+    description: "Validation failed.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
+  })
+  @ApiOperation({
+    summary: "Create a new team",
+  })
+  create(@GetUser("id") userId: number, @Body() body: CreateTeamDto) {
+    return this.teamsService.createTeam(userId, body.name, body.description);
   }
   @Get("my-teams")
   @ApiOperation({
-    summary: 'Finds teams',
+    summary: "Retrieve user's teams",
   })
-  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: "Team retrieved successfully.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
+  })
   getTeams(@GetUser("id") userId: number) {
     return this.teamsService.getUserTeams(userId);
   }
   @Get(":id")
-  @UseGuards(AuthGuard("jwt"))
-  @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Finds a team by user Id',
+    summary: "Retrieve team by ID",
+  })
+  @ApiOkResponse({
+    description: "Team retrieved successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "Team not found.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
   })
   getTeamById(
     @Param("id", ParseIntPipe) teamId: number,
@@ -58,10 +80,17 @@ export class TeamsController {
     return this.teamsService.getTeamById(teamId, userId);
   }
   @Patch(":id")
-  @UseGuards(AuthGuard("jwt"))
-  @ApiBearerAuth()
   @ApiOperation({
-    summary: 'updates a team',
+    summary: "Update team",
+  })
+  @ApiOkResponse({
+    description: "Team updated successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "Team not found.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
   })
   updateTeam(
     @Param("id", ParseIntPipe) teamId: number,
@@ -71,10 +100,17 @@ export class TeamsController {
     return this.teamsService.updateTeam(teamId, userId, body);
   }
   @Delete(":id")
-  @UseGuards(AuthGuard("jwt"))
-  @ApiBearerAuth()
   @ApiOperation({
-    summary: 'deletes a team',
+    summary: "Delete team",
+  })
+  @ApiOkResponse({
+    description: "Team deleted successfully.",
+  })
+  @ApiNotFoundResponse({
+    description: "Team not found.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
   })
   deleteTeam(
     @Param("id", ParseIntPipe) teamId: number,
