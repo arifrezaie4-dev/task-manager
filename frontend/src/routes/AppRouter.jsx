@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import AuthLayout from "../layout/authLayout";
 import { Login } from "../pages/auth/Login";
 import { Dashboard } from "../pages/Dashboard/Dashboard";
+import { ProtectedRoute } from "./ProtectedRoute";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -10,8 +11,10 @@ export const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           {/* <Route path="/register" element={<Register />} /> */}
+        </Route>
+        <Route element={<ProtectedRoute />}>
+            <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
