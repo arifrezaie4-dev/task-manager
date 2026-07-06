@@ -1,19 +1,28 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { authService } from "../../services/authService";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const handleSubmit = async(e) => {
     e.preventDefault();
-
-    console.log({
-      username,
-      email,
-      password,
-    });
+    try {
+      setLoading(true)
+      await authService.register({
+        username, 
+        email, 
+        password
+      })
+      navigate("/login")
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (
@@ -57,11 +66,14 @@ const Register = () => {
           />
         </div>
 
-        <button className="btn btn-success w-100">Create Account</button>
+        <button className="btn btn-success w-100" disabled={loading}>
+          {loading && <div className="spinner-border spinner-border-sm me-2" role="status"></div>}
+          {loading ? "Signing up..." : "Create Account"}
+        </button>
       </form>
 
       <p className="text-center mt-4">
-        Already have an account? <Link to="/">Login</Link>
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </>
   );

@@ -4,6 +4,7 @@ import AuthLayout from "../layout/authLayout";
 import { Login } from "../pages/auth/Login";
 import { Dashboard } from "../pages/Dashboard/Dashboard";
 import { ProtectedRoute } from "./ProtectedRoute";
+import Register from "../pages/auth/Register";
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -11,7 +12,7 @@ export const AppRouter = () => {
         <Route path="/" element={<Home />} />
         <Route element={<AuthLayout />}>
           <Route path="login" element={<Login />} />
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/register" element={<Register />} />
         </Route>
         <Route element={<ProtectedRoute />}>
             <Route path="dashboard" element={<Dashboard />} />
