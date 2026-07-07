@@ -1,6 +1,9 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar";
+import Sidebar from "../../components/Sidebar";
+import MainContent from "../../components/MainContent";
 
 export const Dashboard = () => {
   const { logout } = useContext(AuthContext);
@@ -18,15 +21,16 @@ export const Dashboard = () => {
     }
   };
   return (
-    <div className="container mt-5">
-      <h1>Dashboard</h1>
-      <p>You are logged in 🎉</p>
-      <button className="btn btn-sm btn-primary" onClick={() => handleClick()}>
-        {loading && (
-          <div className="spinner-border spinner-border-sm me-2"></div>
-        )}
-        {loading ? "logging out" : "Log Out"}
-      </button>
-    </div>
+    <>
+      <Navbar />
+
+      <div className="d-flex">
+
+        <Sidebar />
+
+        <MainContent />
+
+      </div>
+    </>
   );
 };
