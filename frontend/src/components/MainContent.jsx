@@ -60,16 +60,37 @@
 // };
 
 // export default MainContent;
+import { useEffect, useState } from "react";
 import TaskList from "./TaskList";
+import { CreateTask } from "./tasks/CreateTaskForm";
+import { taskService } from "../services/taskService";
 
 const MainContent = () => {
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      const response = await taskService.getTasks();
+      console.log(response);
+      setTasks(response.data);
+    } catch (error) {
+      setError("Failed to load tasks.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchTasks();
+  }, []);
   return (
     <div className="flex-grow-1 p-4">
-
       <h2>Dashboard</h2>
 
-      <TaskList />
+      <CreateTask onTaskCreated={fetchTasks}/>
 
+      <TaskList tasks={tasks} loading={loading} error={error} />
     </div>
   );
 };

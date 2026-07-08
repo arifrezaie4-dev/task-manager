@@ -1,25 +1,4 @@
-import { useEffect, useState } from "react";
-import { taskService } from "../services/taskService";
-
-const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const fetchTasks = async () => {
-    try {
-      setLoading(true);
-      const response = await taskService.getTasks();
-      console.log(response);
-      setTasks(response.data);
-    } catch (error) {
-      setError("Failed to load tasks.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+const TaskList = ({ tasks, loading, error }) => {
   if (loading) {
     return (
       <div className="text-center mt-5">
@@ -28,14 +7,10 @@ const TaskList = () => {
     );
   }
   if (error) {
-    return (
-        <p className="text-danger">{error}</p>
-    );
+    return <p className="text-danger">{error}</p>;
   }
   if (tasks.length === 0) {
-    return (
-        <h3>No tasks yet. Create your first task</h3>
-    );
+    return <h3>No tasks yet. Create your first task</h3>;
   }
 
   return (
