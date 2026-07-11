@@ -69,6 +69,7 @@ const MainContent = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedTask, setSelectedTask] = useState(null)
   const fetchTasks = async () => {
     try {
       setLoading(true);
@@ -88,9 +89,9 @@ const MainContent = () => {
     <div className="flex-grow-1 p-4">
       <h2>Dashboard</h2>
 
-      <CreateTask onTaskCreated={fetchTasks}/>
+      <CreateTask onTaskCreated={fetchTasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask}/>
 
-      <TaskList tasks={tasks} loading={loading} error={error} />
+      <TaskList tasks={tasks} loading={loading} error={error} onTaskDeleted={fetchTasks} onSelectedTask={setSelectedTask} />
     </div>
   );
 };

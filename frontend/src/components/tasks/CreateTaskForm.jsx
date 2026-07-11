@@ -1,45 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { taskService } from "../../services/taskService";
 import Swal from "sweetalert2";
-export const CreateTask = ({ onTaskCreated }) => {
+export const CreateTask = ({ onTaskCreated, selectedTask, setSelectedTask }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (!selectedTask) return;
+    setTitle(selectedTask.title);
+    setDescription(selectedTask.description);
+  }, [selectedTask]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await taskService.createTask({
-        title,
-        description,
-      });
+      if (selectedTask) {
+        await taskService.updateTask(selectedTask.id, {
+          title,
+          description,
+        });
+      } else {
+        await taskService.createTask({
+          title,
+          description,
+        });
+      }
       await onTaskCreated();
-      setTitle("")
-      setDescription("")
+      setTitle("");
+      setDescription("");
+      setSelectedTask(null)
       Swal.fire({
-        title: "Task created successfully!",
+        title: selectedTask
+          ? "Task updated successfully!"
+          : "Task created successfully!",
         text: "Your task has been added.",
         icon: "success",
         timer: 2000,
         showConfirmButton: false,
       });
-    
     } catch (error) {
-        Swal.fire({
-            title: "Oops",
-            text: "failed to Create task!",
-            icon: "error",
-            timer: 2000,
-            showConfirmButton: false,
-        })
-        console.error(error)
+      Swal.fire({
+        title: "Oops",
+        text: "failed to Create task!",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      console.error(error);
     } finally {
-        setLoading(false)
+      setLoading(false);
     }
   };
   return (
     <>
-      <h3>Create Task</h3>
+      <h3>{selectedTask? "Update Task": "Create Task"}</h3>
       <div className="card shadow-sm mb-4">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
@@ -70,7 +84,13 @@ export const CreateTask = ({ onTaskCreated }) => {
                 <span className="spinner-border spinner-border-sm me-2"></span>
               )}
 
-              {loading ? "Creating..." : "Create Task"}
+              {loading
+                ? selectedTask
+                  ? "Updating"
+                  : "Creating"
+                : selectedTask
+                  ? "Update"
+                  : "Create"}
             </button>
           </form>
         </div>
