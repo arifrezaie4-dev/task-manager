@@ -60,16 +60,17 @@
 // };
 
 // export default MainContent;
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TaskList from "./TaskList";
 import { CreateTask } from "./tasks/CreateTaskForm";
 import { taskService } from "../services/taskService";
 
-const MainContent = () => {
+const MainContent = ({ tasksRef }) => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null)
+  const [selectedTask, setSelectedTask] = useState(null);
+  const formRef = useRef(null)
   const fetchTasks = async () => {
     try {
       setLoading(true);
@@ -87,11 +88,23 @@ const MainContent = () => {
   }, []);
   return (
     <div className="flex-grow-1 p-4">
-      <h2>Dashboard</h2>
+      <div ref={tasksRef}>
+        <CreateTask
+          onTaskCreated={fetchTasks}
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
+          formRef = {formRef}
+        />
 
-      <CreateTask onTaskCreated={fetchTasks} selectedTask={selectedTask} setSelectedTask={setSelectedTask}/>
-
-      <TaskList tasks={tasks} loading={loading} error={error} onTaskDeleted={fetchTasks} onSelectedTask={setSelectedTask} />
+        <TaskList
+          tasks={tasks}
+          loading={loading}
+          error={error}
+          onTaskDeleted={fetchTasks}
+          onSelectedTask={setSelectedTask}
+          formRef={formRef}
+        />
+      </div>
     </div>
   );
 };

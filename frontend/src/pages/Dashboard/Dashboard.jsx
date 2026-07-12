@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
@@ -9,6 +9,7 @@ export const Dashboard = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const tasksRef = useRef(null)
   const handleClick = () => {
     try {
       setLoading(true);
@@ -26,9 +27,9 @@ export const Dashboard = () => {
 
       <div className="d-flex">
 
-        <Sidebar />
+        <Sidebar tasksRef = {tasksRef} />
 
-        <MainContent />
+        <MainContent tasksRef = {tasksRef} />
 
       </div>
     </>

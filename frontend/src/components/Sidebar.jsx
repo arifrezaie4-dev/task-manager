@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { FaHome, FaTasks, FaUser, FaUsers } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({tasksRef}) => {
   return (
     <div
-      className="bg-light border-end p-3"
+      className="bg-light border-end p-3 sidebar"
       style={{
-        width: "250px",
+        width: "200px",
         minHeight: "100vh",
       }}
     >
@@ -13,27 +14,55 @@ const Sidebar = () => {
 
       <ul className="nav flex-column">
         <li className="nav-item">
-          <a className="nav-link" href="#">
+          <NavLink
+            to={"/dashboard"}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+            href="#"
+          >
+            <FaHome className="me-2"></FaHome>
             Dashboard
-          </a>
+          </NavLink>
         </li>
 
         <li className="nav-item">
-          <a className="nav-link" href="#">
+          <button
+            className="nav-link btn btn-link text-start"
+            onClick={() =>
+              tasksRef.current?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+          >
+          <FaTasks className="me-2"></FaTasks>
             Tasks
-          </a>
+          </button>
         </li>
 
         <li className="nav-item">
-          <a className="nav-link" href="#">
-            Teams
-          </a>
+          <NavLink
+          to={"/teams"}
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+        >
+          <FaUsers className="me-2"></FaUsers>
+          Teams
+        </NavLink>
         </li>
 
         <li className="nav-item">
-          <Link className="nav-link" to="#">
-            Profile
-          </Link>
+          <NavLink
+          to={"/profile"}
+          className={({ isActive }) =>
+            isActive ? "nav-link active" : "nav-link"
+          }
+          href="#"
+        >
+        <FaUser className="me-2"></FaUser>
+          Profile
+        </NavLink>
         </li>
       </ul>
     </div>

@@ -18,7 +18,7 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
     }
     try {
       await taskService.deleteTask(id);
-      await onTaskDeleted()
+      await onTaskDeleted();
       Swal.fire({
         title: "Deleted!",
         text: "Task deleted successfully.",
@@ -32,7 +32,7 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
         title: "Error!",
         text: "Failed to delete task.",
         icon: "error",
-      }); 
+      });
     }
   };
   if (loading) {
@@ -48,21 +48,22 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
   if (tasks.length === 0) {
     return <h3>No tasks yet. Create your first task</h3>;
   }
-
   return (
     <>
       <h3>My Tasks</h3>
 
       <p className="text-muted">Total Tasks: {tasks.length}</p>
 
+      <div className="border-line"></div>
+
       {tasks.map((task) => (
-        <div className="card shadow-sm mb-3" key={task.id}>
+        <div className="card shadow-sm mb-3 card-hov" key={task.id}>
           <div className="card-body">
             <div className="d-flex justify-content-between align-items-center">
               <h5 className="mb-0">{task.title}</h5>
               <span
                 className={
-                  task.isDone ? "badge bg-success" : "badge bg-warning"
+                  task.isDone ? "badge bg-success rounded-pill me-2" : "badge bg-warning rounded-pill me-2"
                 }
               >
                 {task.isDone ? "Completed" : "Pending"}
@@ -70,8 +71,13 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
             </div>
             <p className="text-muted">{task.description}</p>
             <div className="mt-3 d-flex gap-2">
-              <button className="btn btn-warning btn-sm" onClick={() => onSelectedTask(task)}>
-                <FaEdit className="me-1" />
+              <button
+                className="btn btn-warning btn-sm"
+                onClick={() => {
+                  onSelectedTask(task);
+                }}
+              >
+                <FaEdit className="me-1 gap-2" />
                 Edit
               </button>
 

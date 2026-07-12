@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { taskService } from "../../services/taskService";
 import Swal from "sweetalert2";
-export const CreateTask = ({ onTaskCreated, selectedTask, setSelectedTask }) => {
+export const CreateTask = ({
+  onTaskCreated,
+  selectedTask,
+  setSelectedTask,
+  formRef,
+}) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -9,6 +14,10 @@ export const CreateTask = ({ onTaskCreated, selectedTask, setSelectedTask }) => 
     if (!selectedTask) return;
     setTitle(selectedTask.title);
     setDescription(selectedTask.description);
+    formRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   }, [selectedTask]);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +37,7 @@ export const CreateTask = ({ onTaskCreated, selectedTask, setSelectedTask }) => 
       await onTaskCreated();
       setTitle("");
       setDescription("");
-      setSelectedTask(null)
+      setSelectedTask(null);
       Swal.fire({
         title: selectedTask
           ? "Task updated successfully!"
@@ -53,8 +62,8 @@ export const CreateTask = ({ onTaskCreated, selectedTask, setSelectedTask }) => 
   };
   return (
     <>
-      <h3>{selectedTask? "Update Task": "Create Task"}</h3>
-      <div className="card shadow-sm mb-4">
+      <h3>{selectedTask ? "Update Task" : "Create Task"}</h3>
+      <div ref={formRef} className="card shadow-sm mb-4">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="mb-3">

@@ -1,0 +1,26 @@
+.coming {
+  /* color: red; */
+  height: 800px;
+}
+.nav-link.active {
+  font-weight: 600;
+  color: #0d6efd !important;
+  border-left: 4px solid #0d6efd;
+  background-color: #f8f9fa;
+}
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.border-line {
+  width: 98%;
+  height: 4px;
+  background-color: rgb(108, 108, 212);
+  margin-bottom: 2rem;
+}
+.card-hov {
+  transition: 0.2s;
+  transform: translateY(-2px);
+  /* box-shadow: ...; */
+}
