@@ -9,7 +9,7 @@ export const Dashboard = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const tasksRef = useRef(null)
+  const tasksRef = useRef(null);
   const handleClick = () => {
     try {
       setLoading(true);
@@ -24,13 +24,36 @@ export const Dashboard = () => {
   return (
     <>
       <Navbar />
+      <div
+        className="offcanvas offcanvas-start d-md-none"
+        tabIndex="-1"
+        id="sidebarMenu"
+        aria-labelledby="sidebarMenuLabel"
+      >
+        <div className="offcanvas-header">
+          <h5 id="sidebarMenuLabel">Menu</h5>
 
-      <div className="d-flex">
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="offcanvas"
+          ></button>
+        </div>
 
-        <Sidebar tasksRef = {tasksRef} />
+        <div className="offcanvas-body">
+          <Sidebar />
+        </div>
+      </div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-3 col-lg-2 d-none d-md-block">
+            <Sidebar tasksRef={tasksRef} />
+          </div>
 
-        <MainContent tasksRef = {tasksRef} />
-
+          <div className="col-md-9 col-lg-10">
+            <MainContent tasksRef={tasksRef} />
+          </div>
+        </div>
       </div>
     </>
   );

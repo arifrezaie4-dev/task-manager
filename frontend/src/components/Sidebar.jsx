@@ -4,10 +4,10 @@ import { NavLink } from "react-router-dom";
 const Sidebar = ({tasksRef}) => {
   return (
     <div
-      className="bg-light border-end p-3 sidebar"
+      className="bg-light border-end p-3 sidebar h-md-0"
       style={{
-        width: "200px",
-        minHeight: "100vh",
+        width: "",
+        // minHeight: "100vh",
       }}
     >
       <h5>Menu</h5>
