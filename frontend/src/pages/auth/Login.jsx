@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
 import { AuthContext } from "../../context/authContext";
+import Swal from "sweetalert2";
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,11 +17,25 @@ export const Login = () => {
         email,
         password,
       });
-      console.log(response);
-      login(response.access_token)
+      login(response.access_token);
+      await Swal.fire({
+        title: "Success!",
+        text: "You are signed in successfully.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
+      await Swal.fire({
+        title: "Failed!",
+        text: "Check if the email or password is Correct!",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
     } finally {
       setLoading(false);
     }

@@ -2,11 +2,24 @@ import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const handleClick = () => {
+  const handleClick = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "LogOut",
+      cancelButtonText: "Cancel",
+    });
+    if (!result.isConfirmed) {
+      return;
+    }
     logout();
     navigate("/login");
   };
@@ -23,10 +36,6 @@ const Navbar = () => {
         </button>
         <span className="navbar-brand mb-0 h1">TaskFlow</span>
       </div>
-
-      <span className="navbar-brand d-none d-md-block">
-        <h5>Arif Rezaie</h5>
-      </span>
       <span className="navbar-brand ">
         <button className="btn btn-danger" onClick={() => handleClick()}>
           Log out

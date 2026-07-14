@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -8,20 +9,34 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
       await authService.register({
-        username, 
-        email, 
-        password
-      })
-      navigate("/login")
+        username,
+        email,
+        password,
+      });
+      await Swal.fire({
+        title: "Success!",
+        text: "You are now signed up.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      navigate("/login");
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      await Swal.fire({
+        title: "Failed!",
+        text: "Check if the email or password is Correct!",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -67,7 +82,12 @@ const Register = () => {
         </div>
 
         <button className="btn btn-success w-100" disabled={loading}>
-          {loading && <div className="spinner-border spinner-border-sm me-2" role="status"></div>}
+          {loading && (
+            <div
+              className="spinner-border spinner-border-sm me-2"
+              role="status"
+            ></div>
+          )}
           {loading ? "Signing up..." : "Create Account"}
         </button>
       </form>

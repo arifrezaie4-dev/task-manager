@@ -5,10 +5,6 @@ const Sidebar = ({tasksRef}) => {
   return (
     <div
       className="bg-light border-end p-3 sidebar h-md-0"
-      style={{
-        width: "",
-        // minHeight: "100vh",
-      }}
     >
       <h5>Menu</h5>
 

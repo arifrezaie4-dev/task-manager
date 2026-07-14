@@ -27,7 +27,7 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
         showConfirmButton: false,
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.fire({
         title: "Error!",
         text: "Failed to delete task.",
@@ -41,6 +41,9 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
         <div className="spinner-border"></div>
       </div>
     );
+  }
+  if (tasks.length === 0) {
+    return <h4 className="">No tasks!</h4>
   }
   if (error) {
     return <p className="text-danger">{error}</p>;
