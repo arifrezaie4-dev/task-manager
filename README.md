@@ -12,9 +12,7 @@
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
-A modern full-stack task management application designed to help individuals and teams organize their work efficiently.
-
-Built with React, NestJS, Prisma, and PostgreSQL, TaskFlow provides a secure and scalable environment for managing tasks, collaborating with team members, and tracking progress through a clean and responsive user interface.
+A modern full-stack task management application built with React, NestJS, Prisma, and PostgreSQL. TaskFlow provides a secure and scalable environment for managing tasks, collaborating with team members, and tracking progress through a clean and responsive user interface.
 
 > **Project Status**
 >
@@ -77,8 +75,8 @@ TaskFlow is being developed as a portfolio project to demonstrate modern full-st
 
 ## 📁 Project Structure
 
-```
-TaskFlow/
+```text
+task-manager/
 │
 ├── frontend/                 # React application
 │   ├── public/
@@ -92,7 +90,15 @@ TaskFlow/
 │   ├── package.json
 │   └── nest-cli.json
 │
+├── screenshots/              # Application screenshots
+│   ├── dashboard.PNG
+│   ├── login.PNG
+│   ├── register.PNG
+│   ├── swagger.PNG
+│   └── tasks.PNG
+│
 └── README.md
+
 ```
 
 ## 📦 Getting Started
@@ -112,7 +118,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/arifrezaie4-dev/task-manager.git
-cd Task-manager
+cd task-manager
 ```
 
 Install frontend dependencies:
@@ -177,17 +183,25 @@ The Swagger interface provides interactive documentation where you can inspect e
 
 ## 🖼️ Screenshots
 
-Screenshots of the application will be added as the project reaches completion.
+### Login Page
 
-Planned screenshots include:
+![Login Page](screenshots/login.PNG)
 
-* Home Page
-* Login Page
-* Register Page
-* Dashboard
-* Task Management
-* Team Management
-* Swagger API Documentation
+### Register Page
+
+![Register Page](screenshots/register.PNG)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.PNG)
+
+### Tasks Management
+
+![Tasks](screenshots/tasks.PNG)
+
+### Swagger API Documentation
+
+![Swagger](screenshots/swagger.PNG)
 
 
 ## 🗺️ Roadmap
@@ -203,19 +217,6 @@ Planned screenshots include:
 * [x] Create Team management APIs
 * [x] Configure Swagger API documentation
 * [x] Deploy the backend to Render
-
-### In Progress
-
-* [ ] Develop the React frontend
-* [ ] Connect the frontend to the backend API
-* [ ] Improve the user interface and user experience
-
-### Planned
-
-* [ ] Deploy the frontend
-* [ ] Add application screenshots
-* [ ] Complete portfolio integration
-* [ ] Final project optimization and testing
 
 ## 💡 Future Improvements
 
@@ -245,5 +246,4 @@ See the `LICENSE` file for more information.
 Junior Full-Stack Developer
 
 * GitHub: https://github.com/arifrezaie4-dev
-* LinkedIn: *(Coming Soon)*
-
+```
