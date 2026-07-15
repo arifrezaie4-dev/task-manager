@@ -12,7 +12,7 @@
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://task-manager-psi-lemon-71.vercel.app/login)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://task-manager-psi-lemon-71.vercel.app)
 
 A modern full-stack task management application built with React, NestJS, Prisma, and PostgreSQL. TaskFlow provides a secure and scalable environment for managing tasks, collaborating with team members, and tracking progress through a clean and responsive user interface.
 
@@ -167,7 +167,7 @@ npm run dev
 
 The application is deployed and available online:
 
-- Frontend: https://task-manager-psi-lemon-71.vercel.app/login
+- Frontend: https://task-manager-psi-lemon-71.vercel.app
 - Backend API: https://taskflow-backend-rh2p.onrender.com
 - Swagger Documentation: https://taskflow-backend-rh2p.onrender.com/api
 
