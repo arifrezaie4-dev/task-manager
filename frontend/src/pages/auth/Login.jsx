@@ -27,7 +27,6 @@ export const Login = () => {
       });
       navigate("/dashboard");
     } catch (error) {
-      console.error(error);
       await Swal.fire({
         title: "Failed!",
         text: "Check if the email or password is Correct!",
@@ -35,6 +34,7 @@ export const Login = () => {
         timer: 2000,
         showConfirmButton: false,
       });
+      throw error
 
     } finally {
       setLoading(false);

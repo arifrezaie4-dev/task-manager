@@ -55,7 +55,7 @@ export const CreateTask = ({
         timer: 2000,
         showConfirmButton: false,
       });
-      console.error(error);
+      throw error;
     } finally {
       setLoading(false);
     }

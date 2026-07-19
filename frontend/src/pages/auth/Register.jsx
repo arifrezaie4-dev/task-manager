@@ -27,7 +27,6 @@ const Register = () => {
       });
       navigate("/login");
     } catch (error) {
-      console.error(error);
       await Swal.fire({
         title: "Failed!",
         text: "Check if the email or password is Correct!",
@@ -35,6 +34,7 @@ const Register = () => {
         timer: 2000,
         showConfirmButton: false,
       });
+      throw error
     } finally {
       setLoading(false);
     }

@@ -27,12 +27,12 @@ const TaskList = ({ tasks, loading, error, onTaskDeleted, onSelectedTask }) => {
         showConfirmButton: false,
       });
     } catch (error) {
-      console.error(error);
       Swal.fire({
         title: "Error!",
         text: "Failed to delete task.",
         icon: "error",
       });
+      throw error
     }
   };
   if (loading) {

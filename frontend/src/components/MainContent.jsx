@@ -16,7 +16,6 @@ const MainContent = ({ tasksRef }) => {
       setTasks(response.data);
     } catch (error) {
       setError("Failed to load tasks.");
-      console.error(error)
     } finally {
       setLoading(false);
     }
