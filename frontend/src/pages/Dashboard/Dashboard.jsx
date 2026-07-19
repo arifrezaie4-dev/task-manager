@@ -16,7 +16,7 @@ export const Dashboard = () => {
       logout();
       navigate("/login");
     } catch (error) {
-      console.error(error);
+      console.error(error)
     } finally {
       setLoading(false);
     }
