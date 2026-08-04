@@ -53,7 +53,6 @@ export class TasksController {
   }
   @Get()
   @UseGuards(AuthGuard("jwt"), RoleGuard)
-  @Roles(Role.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Retrieve all tasks",
@@ -63,9 +62,6 @@ export class TasksController {
   })
   @ApiUnauthorizedResponse({
     description: "Authentication required.",
-  })
-  @ApiForbiddenResponse({
-    description: "Access denied.",
   })
   findAllTasks(@Request() req) {
     return this.tasksService.getTasks(req.user.id);
@@ -97,7 +93,6 @@ export class TasksController {
   }
   @Put(":id")
   @UseGuards(AuthGuard("jwt"), RoleGuard)
-  @Roles(Role.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Update task",
@@ -110,9 +105,6 @@ export class TasksController {
   })
   @ApiUnauthorizedResponse({
     description: "Authentication required.",
-  })
-  @ApiForbiddenResponse({
-    description: "Access denied.",
   })
   editTask(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateTaskDto) {
     return this.tasksService.updateTask(id, body);
