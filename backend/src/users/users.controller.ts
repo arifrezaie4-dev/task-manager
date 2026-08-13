@@ -68,6 +68,26 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
+
+  @Get("me")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  @ApiOperation({
+    summary: "Retrieve current user's profile",
+  })
+  @ApiOkResponse({
+    description: "Current user retrieved successfully.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
+  })
+  @ApiNotFoundResponse({
+    description: "User not found.",
+  })
+  getMe(@GetUser("id") userId: number) {
+    return this.usersService.getById(userId);
+  }
+
   @Get(":id")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
