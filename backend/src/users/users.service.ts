@@ -85,7 +85,7 @@ export class UsersService {
       data: user,
     };
   }
-  async updateUser(userId: number, body: UpdateUserDto, ) {
+  async updateUser(userId: number, body: UpdateUserDto) {
     const existing = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -140,5 +140,40 @@ export class UsersService {
   }
   async findOneByEmail(email: string) {
     return await this.prisma.user.findUnique({ where: { email } });
+  }
+  async changePassword(
+    userId: number,
+    currentPassword: string,
+    newPassword: string,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException("user not found.")
+    }
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword, 
+      user.password
+    )
+    if (!isPasswordValid) {
+      throw new BadRequestException("current password is incorrect.")
+    }
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+    await this.prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        password: hashedPassword
+      }
+    })
+    return {
+      success: true,
+      message: "Password changed successfully."
+    }
   }
 }
