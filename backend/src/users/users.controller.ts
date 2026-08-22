@@ -29,6 +29,7 @@ import { Role } from "src/auth/roles.enum";
 import { RoleGuard } from "src/auth/Guards/roles.guard";
 import { AuthGuard } from "@nestjs/passport";
 import { GetUser } from "src/auth/decorators/get-user.decorator";
+import { ChangePasswordDto } from "./dto/change-password.dto";
 @ApiTags("Users")
 @Controller("users")
 export class UsersController {
@@ -68,6 +69,26 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
+
+  @Get("me")
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard("jwt"))
+  @ApiOperation({
+    summary: "Retrieve current user's profile",
+  })
+  @ApiOkResponse({
+    description: "Current user retrieved successfully.",
+  })
+  @ApiUnauthorizedResponse({
+    description: "Authentication required.",
+  })
+  @ApiNotFoundResponse({
+    description: "User not found.",
+  })
+  getMe(@GetUser("id") userId: number) {
+    return this.usersService.getById(userId);
+  }
+
   @Get(":id")
   @ApiBearerAuth()
   @UseGuards(AuthGuard("jwt"))
@@ -127,4 +148,26 @@ export class UsersController {
   deleteUser(@Param("id", ParseIntPipe) id: number) {
     return this.usersService.deleteUser(id);
   }
+  @Put("change-password")
+@ApiBearerAuth()
+@UseGuards(AuthGuard("jwt"))
+@ApiOperation({
+  summary: "Change current user's password",
+})
+@ApiOkResponse({
+  description: "Password changed successfully.",
+})
+@ApiBadRequestResponse({
+  description: "Current password is incorrect.",
+})
+@ApiUnauthorizedResponse({
+  description: "Authentication required.",
+})
+changePassword(@GetUser("id") userId: number, @Body() dto: ChangePasswordDto) {
+  return this.usersService.changePassword(
+    userId, 
+    dto.currentPassword,
+    dto.newPassword
+  )
+}
 }
