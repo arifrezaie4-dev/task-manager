@@ -18,11 +18,13 @@ A modern full-stack task management application built with React, NestJS, Prisma
 
 > **Project Status**
 >
-> 🚧 Currently under active development.
+> 🚀 TaskFlow is deployed and running in production.
 >
 > ✅ Backend is production-ready.
 >
-> 🚧 Frontend is in progress.
+> ✅ Frontend is deployed and production-ready.
+>
+> 🚧 New features and improvements are actively being developed.
 
 ## 📌 Overview
 
@@ -30,19 +32,20 @@ TaskFlow is a modern full-stack task management application designed to help ind
 
 The project follows a client-server architecture, with a React frontend delivering a responsive user experience and a NestJS backend exposing a secure RESTful API. Data is managed through Prisma ORM with PostgreSQL as the primary database, while JWT-based authentication ensures secure access to protected resources.
 
-TaskFlow is being developed as a portfolio project to demonstrate modern full-stack development practices, including scalable architecture, clean code principles, authentication and authorization, API documentation, and deployment to a production environment.
+TaskFlow is a portfolio project demonstrating modern full-stack development practices, including scalable architecture, clean code principles, authentication and authorization, API documentation, and deployment to a production environment.
 
 ## ✨ Features
 
 - 🔐 **User Authentication** – Secure user registration and login using JWT-based authentication.
 - 🛡️ **Authorization** – Protected routes and role-based access control for secure resource management.
+- 👤 **Profile Management** – View and update profile information, including username and password management.
 - 📋 **Task Management** – Create, read, update, and delete tasks with a clean RESTful API.
 - 👥 **Team Collaboration** – Organize users into teams and manage shared tasks.
 - ✅ **Data Validation** – Request validation using DTOs and Validation Pipes.
 - ⚠️ **Global Error Handling** – Consistent exception handling for reliable API responses.
 - 📚 **Swagger Documentation** – Interactive API documentation for testing and exploration.
 - 🗄️ **PostgreSQL Database** – Reliable relational database managed with Prisma ORM.
-- 🚀 **Production Deployment** – Backend deployed and configured for a production environment.
+- 🚀 **Production Deployment** – Full-stack application deployed to production with Vercel and Render.
 - 🎨 **Responsive Frontend** – Modern React interface built with Bootstrap and Axios for API communication.
 
 ## 🛠️ Tech Stack
@@ -97,7 +100,9 @@ task-manager/
 │   ├── login.PNG
 │   ├── register.PNG
 │   ├── swagger.PNG
-│   └── tasks.PNG
+│   ├── tasks.PNG
+│   ├── profile.PNG
+│   └── profile-change-password.PNG
 │
 └── README.md
 
@@ -185,11 +190,10 @@ Once the backend server is running locally, you can access the API documentation
 
 The production backend is available at:
 
-* Backend API: https://taskflow-backend-rh2p.onrender.com
-* Swagger UI: https://taskflow-backend-rh2p.onrender.com/api
+- Backend API: https://taskflow-backend-rh2p.onrender.com
+- Swagger UI: https://taskflow-backend-rh2p.onrender.com/api
 
 The Swagger interface provides interactive documentation where you can inspect endpoints, request parameters, and API responses directly from your browser.
-
 
 ## 🖼️ Screenshots
 
@@ -209,39 +213,59 @@ The Swagger interface provides interactive documentation where you can inspect e
 
 ![Tasks](screenshots/tasks.PNG)
 
+### Profile
+
+![Profile](screenshots/profile.PNG)
+
+The profile page allows users to view and manage their account information.
+
+- View username, email, role, and membership date
+- Update username
+- Change password securely
+- Client-side password confirmation
+- Success and error feedback
+
+### Change Password
+
+![Change Password](screenshots/profile-change-password.PNG)
+
+
 ### Swagger API Documentation
 
 ![Swagger](screenshots/swagger.PNG)
-
 
 ## 🗺️ Roadmap
 
 ### Completed
 
-* [x] Initialize the project structure
-* [x] Build the NestJS backend
-* [x] Configure PostgreSQL with Prisma ORM
-* [x] Implement user authentication with JWT
-* [x] Add role-based authorization
-* [x] Develop Task CRUD operations
-* [x] Create Team management APIs
-* [x] Configure Swagger API documentation
-* [x] Deploy the backend to Render
+- [x] Initialize the project structure
+- [x] Build the NestJS backend
+- [x] Configure PostgreSQL with Prisma ORM
+- [x] Implement user authentication with JWT
+- [x] Add role-based authorization
+- [x] Develop Task CRUD operations
+- [x] Create Team management APIs
+- [x] Implement user profile management
+- [x] Implement username update
+- [x] Implement secure password change
+- [x] Configure Swagger API documentation
+- [x] Deploy the backend to Render
+- [x] Deploy the frontend to Vercel
 
 ## 💡 Future Improvements
 
 The following features are planned for future releases:
 
-* Email verification
-* Password reset functionality
-* Task deadlines and reminders
-* File attachments for tasks
-* Real-time notifications
-* Activity logs
-* Advanced search and filtering
-* Dark mode
-* Calendar view
-* Docker support for easier deployment
+- Email verification
+- Password reset functionality
+- Task deadlines and reminders
+- File attachments for tasks
+- Real-time notifications
+- Activity logs
+- Advanced search and filtering
+- Dark mode
+- Calendar view
+- Docker support for easier deployment
 
 ## 📄 License
 
@@ -255,5 +279,8 @@ See the `LICENSE` file for more information.
 
 Junior Full-Stack Developer
 
-* GitHub: https://github.com/arifrezaie4-dev
+- GitHub: https://github.com/arifrezaie4-dev
+
+```
+
 ```
