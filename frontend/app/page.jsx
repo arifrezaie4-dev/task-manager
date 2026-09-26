@@ -1,8 +1,15 @@
+import Link from "next/link";
+
 export default function HomePage() {
-    return (
-      <main className="container py-5">
-        <h1>TaskFlow</h1>
-        <p>Next.js migration is in progress 🚀</p>
-      </main>
-    );
-  }
+  return (
+    <div>
+      <h1>TaskFlow</h1>
+
+      <Link href="/login">Login</Link>
+      <br />
+      <Link href="/register">Register</Link>
+      <br />
+      <Link href="/dashboard">Dashboard</Link>
+    </div>
+  );
+}
