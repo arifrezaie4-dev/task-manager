@@ -29,10 +29,9 @@ export default function TaskList({
 
     try {
       await taskService.deleteTask(id);
-
       await onTaskDeleted();
 
-      await Swal.fire({
+      Swal.fire({
         title: "Deleted!",
         text: "Task deleted successfully.",
         icon: "success",
@@ -40,13 +39,13 @@ export default function TaskList({
         showConfirmButton: false,
       });
     } catch (error) {
-      console.error(error);
-
-      await Swal.fire({
+      Swal.fire({
         title: "Error!",
         text: "Failed to delete task.",
         icon: "error",
       });
+
+      console.error(error);
     }
   };
 
@@ -63,7 +62,7 @@ export default function TaskList({
   }
 
   if (tasks.length === 0) {
-    return <h4>No tasks!</h4>;
+    return <h4>No tasks yet. Create your first task.</h4>;
   }
 
   return (

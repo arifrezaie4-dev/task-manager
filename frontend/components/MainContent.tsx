@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import TaskList from "./TaskList";
-import { CreateTask } from "./tasks/CreateTaskForm";
+import CreateTask from "./CreateTask";
 import { taskService } from "@/services/taskService";
 
 export default function MainContent({ tasksRef }) {
@@ -17,9 +17,9 @@ export default function MainContent({ tasksRef }) {
     try {
       setLoading(true);
       setError("");
-
+  
       const response = await taskService.getTasks();
-
+  
       setTasks(response.data);
     } catch (error) {
       console.error(error);
