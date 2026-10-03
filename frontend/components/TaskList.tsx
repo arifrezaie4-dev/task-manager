@@ -3,6 +3,7 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { taskService } from "@/services/taskService";
+import { useState } from "react";
 
 export default function TaskList({
   tasks,
@@ -11,6 +12,22 @@ export default function TaskList({
   onTaskDeleted,
   onSelectedTask,
 }) {
+  const [filter, setFilter] = useState("all"); const [currentPage, setCurrentPage] = useState(1);
+  const tasksPerPage = 3;
+  const filteredTasks =
+    filter === "completed"
+      ? tasks.filter((task) => task.isDone)
+      : filter === "pending"
+        ? tasks.filter((task) => !task.isDone)
+        : tasks;
+  const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
+
+  const startIndex = (currentPage - 1) * tasksPerPage;
+
+  const paginatedTasks = filteredTasks.slice(
+    startIndex,
+    startIndex + tasksPerPage
+  );
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -73,9 +90,27 @@ export default function TaskList({
         Total Tasks: {tasks.length}
       </p>
 
+      <div className="mb-3">
+        <label className="form-label">Filter Tasks</label>
+
+        <select
+          className="form-select"
+          value={filter}
+          onChange={(e) => {
+            setFilter(e.target.value)
+            setCurrentPage(1)
+          }
+          }
+        >
+          <option value="all">All Tasks</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
       <div className="border-line"></div>
 
-      {tasks.map((task) => (
+      {paginatedTasks.map((task) => (
         <div
           className="card shadow-sm mb-3 card-hov"
           key={task.id}
@@ -119,6 +154,29 @@ export default function TaskList({
           </div>
         </div>
       ))}
+      {totalPages > 1 && (
+        <div className="d-flex justify-content-center gap-2 mt-4">
+          <button
+            className="btn btn-outline-primary"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+          >
+            Previous
+          </button>
+
+          <span className="align-self-center">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            className="btn btn-outline-primary"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </>
   );
 }
