@@ -5,10 +5,6 @@ export default function DashboardLayout({
   }) {
     return (
       <div>
-        <aside>
-          Sidebar
-        </aside>
-  
         <main>
           {children}
         </main>
