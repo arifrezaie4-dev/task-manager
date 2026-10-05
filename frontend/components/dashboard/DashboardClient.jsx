@@ -6,6 +6,7 @@ import Sidebar from "./Sidebar";
 import MainContent from "../MainContent";
 
 export default function DashboardClient() {
+
   const tasksRef = useRef(null);
 
   return (
