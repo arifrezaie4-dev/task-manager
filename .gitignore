@@ -59,3 +59,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
 Thumbs.db
+
+# Next.js
+**/.next/
+**/next-env.d.ts
