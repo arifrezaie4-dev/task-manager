@@ -5,21 +5,40 @@ import Swal from "sweetalert2";
 import { taskService } from "@/services/taskService";
 import { useState } from "react";
 
+type Task = {
+  id: number;
+  title: string;
+  description?: string;
+  isDone: boolean;
+};
+
+type TaskListProps = {
+  tasks: Task[];
+  loading: boolean;
+  error: string;
+  onTaskDeleted: () => Promise<void>;
+  onSelectedTask: (task: Task) => void;
+};
+
 export default function TaskList({
   tasks,
   loading,
   error,
   onTaskDeleted,
   onSelectedTask,
-}) {
-  const [filter, setFilter] = useState("all"); const [currentPage, setCurrentPage] = useState(1);
+}: TaskListProps) {
+  const [filter, setFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+
   const tasksPerPage = 3;
+
   const filteredTasks =
     filter === "completed"
       ? tasks.filter((task) => task.isDone)
       : filter === "pending"
         ? tasks.filter((task) => !task.isDone)
         : tasks;
+
   const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
 
   const startIndex = (currentPage - 1) * tasksPerPage;
@@ -28,7 +47,8 @@ export default function TaskList({
     startIndex,
     startIndex + tasksPerPage
   );
-  const handleDelete = async (id) => {
+
+  const handleDelete = async (id: number) => {
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -97,10 +117,9 @@ export default function TaskList({
           className="form-select"
           value={filter}
           onChange={(e) => {
-            setFilter(e.target.value)
-            setCurrentPage(1)
-          }
-          }
+            setFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="all">All Tasks</option>
           <option value="pending">Pending</option>
@@ -154,6 +173,7 @@ export default function TaskList({
           </div>
         </div>
       ))}
+
       {totalPages > 1 && (
         <div className="d-flex justify-content-center gap-2 mt-4">
           <button

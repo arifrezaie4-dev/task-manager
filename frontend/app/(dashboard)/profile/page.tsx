@@ -2,9 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { userService } from "@/services/userService";
+import axios from "axios";
+type User = {
+    username: string;
+    email: string;
+    role: string;
+    createdAt: string;
+};
 
 export default function ProfilePage() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [editing, setEditing] = useState(false);
@@ -39,7 +46,7 @@ export default function ProfilePage() {
 
         fetchProfile();
     }, []);
-    const handleUpdateProfile = async (e) => {
+    const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
@@ -63,7 +70,7 @@ export default function ProfilePage() {
         }
     };
 
-    const handleChangePassword = async (e) => {
+    const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
@@ -84,9 +91,14 @@ export default function ProfilePage() {
         } catch (error) {
             console.error(error);
 
-            setPasswordMessage(
-                error.response?.data?.message || "Failed to change password."
-            );
+            if (axios.isAxiosError(error)) {
+                setPasswordMessage(
+                    error.response?.data?.message ||
+                    "Failed to change password."
+                );
+            } else {
+                setPasswordMessage("Failed to change password.");
+            }
 
             setPasswordMessageType("error");
         } finally {
@@ -107,6 +119,13 @@ export default function ProfilePage() {
         return (
             <div className="container py-5">
                 <p className="text-danger">{error}</p>
+            </div>
+        );
+    }
+    if (!user) {
+        return (
+            <div className="container py-5">
+                <p className="text-danger">User profile not found.</p>
             </div>
         );
     }
@@ -247,8 +266,8 @@ export default function ProfilePage() {
                 {passwordMessage && (
                     <p
                         className={`mt-3 ${passwordMessageType === "success"
-                                ? "text-success"
-                                : "text-danger"
+                            ? "text-success"
+                            : "text-danger"
                             }`}
                     >
                         {passwordMessage}

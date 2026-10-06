@@ -4,12 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import TaskList from "./TaskList";
 import CreateTask from "./CreateTask";
 import { taskService } from "@/services/taskService";
+type Task = {
+  id: number;
+  title: string;
+  description?: string;
+  isDone: boolean
+};
+type MainContentProps = {
+  tasksRef: React.RefObject<HTMLDivElement | null>;
+};
 
-export default function MainContent({ tasksRef }) {
-  const [tasks, setTasks] = useState([]);
+
+export default function MainContent({ tasksRef }: MainContentProps) {
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const formRef = useRef(null);
 
@@ -17,9 +27,9 @@ export default function MainContent({ tasksRef }) {
     try {
       setLoading(true);
       setError("");
-  
+
       const response = await taskService.getTasks();
-  
+
       setTasks(response.data);
     } catch (error) {
       console.error(error);
@@ -30,9 +40,12 @@ export default function MainContent({ tasksRef }) {
   };
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    const loadTasks = async () => {
+      await fetchTasks();
+    };
 
+    loadTasks();
+  }, []);
   return (
     <div className="flex-grow-1 p-4">
       <div ref={tasksRef}>
