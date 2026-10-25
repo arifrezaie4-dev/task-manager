@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateTaskDto } from "./dto/CreateTasks.dto";
 import { UpdateTaskDto } from "./dto/updateTask.dto";
@@ -6,36 +11,39 @@ import { UpdateTaskDto } from "./dto/updateTask.dto";
 @Injectable()
 export class TasksService {
   constructor(private prisma: PrismaService) {}
+
   async createTask(dto: CreateTaskDto, userId: number) {
     const existing = await this.prisma.task.findFirst({
       where: {
         title: dto.title,
         description: dto.description,
-        userId: userId
-      }
-    })
+        userId,
+      },
+    });
 
-    if(existing) {
-      throw new BadRequestException("the task with this title already exists.")
+    if (existing) {
+      throw new BadRequestException("The task with this title already exists.");
     }
 
     const task = await this.prisma.task.create({
       data: {
         title: dto.title,
         description: dto.description,
-        userId: userId,
+        userId,
       },
     });
+
     return {
       success: true,
       message: "Task Created successfully",
       data: task,
     };
   }
+
   async getTasks(userId: number) {
     const tasks = await this.prisma.task.findMany({
       where: {
-        userId
+        userId,
       },
       include: {
         user: {
@@ -49,25 +57,17 @@ export class TasksService {
         },
       },
     });
+
     return {
       success: true,
       message: "Tasks Found successfully",
       data: tasks,
     };
   }
-  async getTask(id: number) {
-    const existing = await this.prisma.task.findUnique({
-      where: {
-        id,
-      },
-    });
-    if (!existing) {
-      throw new NotFoundException("The task with this id doesn't exist.");
-    }
+
+  async getTask(id: number, userId: number) {
     const task = await this.prisma.task.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
       include: {
         user: {
           select: {
@@ -80,48 +80,68 @@ export class TasksService {
         },
       },
     });
+
+    if (!task) {
+      throw new NotFoundException("The task with this id doesn't exist.");
+    }
+
+    if (task.userId !== userId) {
+      throw new ForbiddenException("You cannot access someone else's task.");
+    }
+
     return {
       success: true,
       message: "Task Found successfully",
       data: task,
     };
   }
-  async updateTask(id: number, body: UpdateTaskDto) {
+
+  async updateTask(id: number, body: UpdateTaskDto, userId: number) {
     const existing = await this.prisma.task.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     });
+
     if (!existing) {
       throw new NotFoundException("The task with this id doesn't exist to edit.");
     }
+
+    if (existing.userId !== userId) {
+      throw new ForbiddenException("You cannot update someone else's task.");
+    }
+
     const task = await this.prisma.task.update({
       where: { id },
       data: {
         title: body.title,
+        description: body.description,
         isDone: body.isDone,
       },
     });
+
     return {
       success: true,
       message: "Task Updated successfully",
       data: task,
     };
   }
-  async deleteTask(id: number) {
+
+  async deleteTask(id: number, userId: number) {
     const existing = await this.prisma.task.findUnique({
-      where : {
-        id
-      }
-    })
-    if (!existing) {
-      throw new NotFoundException(`The task with id: ${id}, Not Found`)
-    }
-    const task = await this.prisma.task.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
+
+    if (!existing) {
+      throw new NotFoundException(`The task with id: ${id}, Not Found`);
+    }
+
+    if (existing.userId !== userId) {
+      throw new ForbiddenException("You cannot delete someone else's task.");
+    }
+
+    await this.prisma.task.delete({
+      where: { id },
+    });
+
     return {
       success: true,
       message: "Task Deleted Successfully.",

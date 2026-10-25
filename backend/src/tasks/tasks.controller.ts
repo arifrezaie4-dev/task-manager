@@ -26,9 +26,6 @@ import {
   ApiUnauthorizedResponse,
 } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
-import { RoleGuard } from "src/auth/Guards/roles.guard";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "src/auth/roles.enum";
 @ApiTags("Tasks")
 @Controller("tasks")
 export class TasksController {
@@ -52,7 +49,7 @@ export class TasksController {
     return this.tasksService.createTask(body, req.user.id);
   }
   @Get()
-  @UseGuards(AuthGuard("jwt"), RoleGuard)
+  @UseGuards(AuthGuard("jwt"))
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Retrieve all tasks",
@@ -88,11 +85,11 @@ export class TasksController {
     description: "Task with this id does not exist!",
   })
 
-  findTask(@Param("id", ParseIntPipe) id: number) {
-    return this.tasksService.getTask(id);
+  findTask(@Param("id", ParseIntPipe) id: number, @Request() req) {
+    return this.tasksService.getTask(id, req.user.id);
   }
   @Put(":id")
-  @UseGuards(AuthGuard("jwt"), RoleGuard)
+  @UseGuards(AuthGuard("jwt"))
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Update task",
@@ -106,12 +103,11 @@ export class TasksController {
   @ApiUnauthorizedResponse({
     description: "Authentication required.",
   })
-  editTask(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateTaskDto) {
-    return this.tasksService.updateTask(id, body);
+  editTask(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateTaskDto, @Request() req) {
+    return this.tasksService.updateTask(id, body, req.user.id);
   }
   @Delete(":id")
-  @UseGuards(AuthGuard("jwt"), RoleGuard)
-  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard("jwt"))
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Delete task",
@@ -128,7 +124,7 @@ export class TasksController {
   @ApiNotFoundResponse({
     description: "Task with this id does not exist!",
   })
-  deleteTask(@Param("id", ParseIntPipe) id: number) {
-    return this.tasksService.deleteTask(id);
+  deleteTask(@Param("id", ParseIntPipe) id: number, @Request() req) {
+    return this.tasksService.deleteTask(id, req.user.id);
   }
 }

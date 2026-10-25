@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import type { FormEvent } from "react";
 
 import { authService } from "@/services/authService";
 import { AuthContext } from "@/context/AuthContext";
@@ -16,7 +17,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useContext(AuthContext);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
