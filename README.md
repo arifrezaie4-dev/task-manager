@@ -1,286 +1,223 @@
-# 🚀 TaskFlow
+# TaskFlow
 
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
-![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=000000)
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://task-manager-psi-lemon-71.vercel.app)
+TaskFlow is a full-stack task-management portfolio project. Its active frontend is a Next.js App Router application, backed by a NestJS REST API and a PostgreSQL database accessed through Prisma. The repository also retains the previous React + Vite frontend in `frontend-react/` as a reference during the migration.
 
-A modern full-stack task management application built with React, NestJS, Prisma, and PostgreSQL. TaskFlow provides a secure and scalable environment for managing tasks, collaborating with team members, and tracking progress through a clean and responsive user interface.
+## Features
 
-> **Project Status**
->
-> 🚀 TaskFlow is deployed and running in production.
->
-> ✅ Backend is production-ready.
->
-> ✅ Frontend is deployed and production-ready.
->
-> 🚧 New features and improvements are actively being developed.
+- Register and sign in with email and password; authenticated API requests use JWTs.
+- Create, view, update, and delete a user's own tasks. The dashboard includes pending/completed filters and pagination.
+- View and update profile information, including username and password.
+- Enforce user-specific task access in the API, with service tests for task ownership.
+- Expose REST endpoints for team creation and management. The active Next.js teams page is currently a placeholder, so the team API is not yet surfaced through the migrated UI.
+- Validate API requests and document endpoints with Swagger/OpenAPI.
 
-## 📌 Overview
+## Technology stack
 
-TaskFlow is a modern full-stack task management application designed to help individuals and teams organize their work efficiently. It provides a simple and intuitive interface for creating, managing, and tracking tasks while promoting collaboration and productivity.
+### Active frontend
 
-The project follows a client-server architecture, with a React frontend delivering a responsive user experience and a NestJS backend exposing a secure RESTful API. Data is managed through Prisma ORM with PostgreSQL as the primary database, while JWT-based authentication ensures secure access to protected resources.
-
-TaskFlow is a portfolio project demonstrating modern full-stack development practices, including scalable architecture, clean code principles, authentication and authorization, API documentation, and deployment to a production environment.
-
-## ✨ Features
-
-- 🔐 **User Authentication** – Secure user registration and login using JWT-based authentication.
-- 🛡️ **Authorization** – Protected routes and role-based access control for secure resource management.
-- 👤 **Profile Management** – View and update profile information, including username and password management.
-- 📋 **Task Management** – Create, read, update, and delete tasks with a clean RESTful API.
-- 👥 **Team Collaboration** – Organize users into teams and manage shared tasks.
-- ✅ **Data Validation** – Request validation using DTOs and Validation Pipes.
-- ⚠️ **Global Error Handling** – Consistent exception handling for reliable API responses.
-- 📚 **Swagger Documentation** – Interactive API documentation for testing and exploration.
-- 🗄️ **PostgreSQL Database** – Reliable relational database managed with Prisma ORM.
-- 🚀 **Production Deployment** – Full-stack application deployed to production with Vercel and Render.
-- 🎨 **Responsive Frontend** – Modern React interface built with Bootstrap and Axios for API communication.
-
-## 🛠️ Tech Stack
-
-### Frontend
-
-- React
-- Vite
-- Bootstrap
-- Axios
-- React Router
+- Next.js 16 App Router, React 19, and TypeScript
+- Bootstrap, Tailwind CSS, Axios, React Icons, and SweetAlert2
 
 ### Backend
 
-- NestJS
-- TypeScript
-- Prisma ORM
-- JWT Authentication
-- Passport.js
-- Swagger (OpenAPI)
+- NestJS 11 and TypeScript
+- Prisma ORM 6 with PostgreSQL
+- Passport, JWT, and bcrypt for authentication
+- Swagger/OpenAPI for API documentation
 
-### Database
+### Testing and deployment
 
-- PostgreSQL
+- Jest and `@nestjs/testing` for backend service tests
+- Vercel for the frontend and Render for the backend
 
-### Development Tools
+`frontend-react/` is the legacy React + Vite application and uses React Router. It is not the active frontend.
 
-- Git
-- GitHub
-- Postman
-- npm
-
-## 📁 Project Structure
+## Repository structure
 
 ```text
 task-manager/
-│
-├── frontend/                 # React application
-│   ├── public/
+├── frontend/                 # Active Next.js App Router application
+│   ├── app/                  # Routes: /, /login, /register, /dashboard, /profile, /tasks, /teams
+│   ├── api/                  # Axios API client
+│   ├── components/
+│   ├── constants/
+│   ├── context/
+│   ├── services/
+│   └── package.json
+├── frontend-react/           # Previous React + Vite frontend (legacy)
 │   ├── src/
-│   ├── package.json
-│   └── vite.config.js
-│
+│   ├── public/
+│   └── package.json
 ├── backend/                  # NestJS REST API
 │   ├── prisma/
+│   │   ├── migrations/
+│   │   └── schema.prisma
 │   ├── src/
-│   ├── package.json
-│   └── nest-cli.json
-│
-├── screenshots/              # Application screenshots
-│   ├── dashboard.PNG
-│   ├── login.PNG
-│   ├── register.PNG
-│   ├── swagger.PNG
-│   ├── tasks.PNG
-│   ├── profile.PNG
-│   └── profile-change-password.PNG
-│
+│   │   ├── auth/
+│   │   ├── tasks/
+│   │   ├── teams/
+│   │   ├── users/
+│   │   └── prisma/
+│   └── package.json
+├── screenshots/              # Existing application and Swagger screenshots
+├── MIGRATION_PROGRESS.md
 └── README.md
-
 ```
 
-## 📦 Getting Started
+## Prerequisites
 
-### Prerequisites
-
-Before running this project, make sure you have the following installed:
-
-- Node.js (v20 or later recommended)
-- npm
+- Node.js 20.9 or later and npm
 - PostgreSQL
 - Git
 
-### Installation
+## Installation
 
-Clone the repository:
+Clone the repository and install dependencies for the active frontend and backend:
 
 ```bash
 git clone https://github.com/arifrezaie4-dev/task-manager.git
 cd task-manager
-```
 
-Install frontend dependencies:
-
-```bash
-cd frontend
+cd backend
+npm install
+cd ../frontend
 npm install
 ```
 
-Install backend dependencies:
+The legacy frontend has its own `package.json`; install its dependencies from `frontend-react/` only if you intend to work on that app.
 
-```bash
-cd ../backend
-npm install
-```
+## Environment configuration
 
-### Environment Variables
-
-Create a `.env` file inside the `backend` directory and configure the following variables:
+Create `backend/.env` and set the variables currently read by the application:
 
 ```env
-DATABASE_URL=
-JWT_SECRET=
-PORT=
+DATABASE_URL="postgresql://<USER>:<PASSWORD>@localhost:5432/<DATABASE>?schema=public"
+PORT=3000
 ```
 
-### Running the Application
+Replace the database placeholders with your local PostgreSQL connection details. Prisma reads `DATABASE_URL` from `backend/prisma/schema.prisma`; the API listens on `PORT`, defaulting to `3000`.
 
-Start the backend server:
+The active frontend currently gets its API base URL from `frontend/constants/api.ts`, which points to the Render deployment. The Axios client uses that constant directly; `NEXT_PUBLIC_API_URL` is not currently supported. To run the frontend against your local API, change the constant to `http://localhost:3000/` in your local working copy. Do not put secrets in `NEXT_PUBLIC_*` variables, since they are exposed to browser code.
+
+The backend currently configures its JWT signing secret and token lifetime in code rather than reading `JWT_SECRET` or `JWT_EXPIRES_IN` from the environment. The existing example environment file should not be taken as evidence that those settings are configurable.
+
+## Local development
+
+1. Start PostgreSQL and create the database named in `DATABASE_URL`.
+2. Apply the checked-in Prisma migrations from the backend directory:
+
+   ```bash
+   cd backend
+   npx prisma migrate dev
+   ```
+
+3. In a backend terminal, start the API:
+
+   ```bash
+   cd backend
+   npm run start:dev
+   ```
+
+4. In a separate terminal, start the active Next.js frontend on port `3001`:
+
+   ```bash
+   cd frontend
+   npm run dev -- --port 3001
+   ```
+
+   Open [http://localhost:3001](http://localhost:3001). The API runs at [http://localhost:3000](http://localhost:3000). Configure the frontend API base URL as described above if you want browser requests to use the local API instead of the deployed Render service.
+
+## API and Swagger
+
+Swagger UI is served at `/api`:
+
+- Local: [http://localhost:3000/api](http://localhost:3000/api)
+- Render deployment: [https://taskflow-backend-rh2p.onrender.com/api](https://taskflow-backend-rh2p.onrender.com/api)
+
+The API base URL is [https://taskflow-backend-rh2p.onrender.com](https://taskflow-backend-rh2p.onrender.com). Use Swagger UI to inspect the authentication, users, tasks, and teams endpoints.
+
+## Live deployments
+
+The repository previously listed the following deployment URLs. Their availability was checked on October 28, 2026:
+
+- Frontend: [https://task-manager-ten-ecru-81.vercel.app/](https://task-manager-ten-ecru-81.vercel.app/) — the URL returned HTTP 404; the current Vercel URL needs confirmation.
+- Backend: [https://taskflow-backend-rh2p.onrender.com](https://taskflow-backend-rh2p.onrender.com) — Render returned HTTP 503 with an application-starting screen during verification.
+- Swagger UI: [https://taskflow-backend-rh2p.onrender.com/api](https://taskflow-backend-rh2p.onrender.com/api) — also returned HTTP 503 during verification.
+
+These are not presented as verified working demos. Please confirm the current deployment URLs before sharing them as live demos.
+
+## Screenshots
+
+The following image files are present in `screenshots/`:
+
+| Screen | Image |
+| --- | --- |
+| Main | ![Login screen](screenshots/main.PNG) |
+| Login | ![Login screen](screenshots/login.PNG) |
+| Registration | ![Registration screen](screenshots/register.PNG) |
+| Dashboard | ![Dashboard](screenshots/dashboard.PNG) |
+| Tasks | ![Tasks](screenshots/tasks.PNG) |
+| Profile | ![Profile](screenshots/profile.PNG) |
+| Profile password change | ![Profile password change](screenshots/profile-change-password.PNG) |
+| Swagger UI | ![Swagger UI](screenshots/swagger.PNG) |
+
+These are existing repository screenshots and may show the UI before the Next.js migration.
+
+## Testing and production builds
+
+Run the backend Jest service tests:
 
 ```bash
 cd backend
-npm run start:dev
+npm test -- --runInBand
 ```
 
-Start the frontend:
+Run a backend production build:
+
+```bash
+cd backend
+npm run build
+```
+
+Build the active frontend for production:
 
 ```bash
 cd frontend
-npm run dev
+npm run build
 ```
 
-## 🌐 Live Demo
+The frontend package does not define a test script. Jest is configured in the backend package, and the current service tests cover task ownership behavior.
 
-The application is deployed and available online:
+## Project status and roadmap
 
-- Frontend: https://task-manager-psi-lemon-71.vercel.app
-- Backend API: https://taskflow-backend-rh2p.onrender.com
-- Swagger Documentation: https://taskflow-backend-rh2p.onrender.com/api
+The backend includes authentication, task and team API modules, profile endpoints, and Swagger documentation. The active frontend has migrated authentication, dashboard, and profile pages; the `/tasks` route is a basic placeholder and the `/teams` route displays a “coming soon” message. The previous Vite application remains in `frontend-react/`.
 
-## 📚 API Documentation
+This repository demonstrates a full-stack application, but the incomplete frontend migration, unconfirmed deployment URL, and backend configuration that is not environment-driven mean the project should not be described as fully production-ready.
 
-The backend API is documented using Swagger (OpenAPI), making it easy to explore and test available endpoints.
+### Next steps
 
-### Local Documentation
+- Complete and validate the Next.js tasks and teams pages.
+- Move the frontend API base URL into supported runtime/build configuration.
+- Load JWT signing configuration from a secure backend environment variable.
+- Reconfirm the deployed frontend and backend URLs.
+- Expand automated test coverage beyond task ownership service tests.
 
-Once the backend server is running locally, you can access the API documentation at:
+## License
 
-`http://localhost:3000/api`
+No root `LICENSE` file is present, and the backend package declares the project `UNLICENSED`. No open-source license is currently specified.
 
-### Live Backend
+## Author
 
-The production backend is available at:
+**Arif Rezaie** — Junior Full-Stack Developer
 
-- Backend API: https://taskflow-backend-rh2p.onrender.com
-- Swagger UI: https://taskflow-backend-rh2p.onrender.com/api
-
-The Swagger interface provides interactive documentation where you can inspect endpoints, request parameters, and API responses directly from your browser.
-
-## 🖼️ Screenshots
-
-### Login Page
-
-![Login Page](screenshots/login.PNG)
-
-### Register Page
-
-![Register Page](screenshots/register.PNG)
-
-### Dashboard
-
-![Dashboard](screenshots/dashboard.PNG)
-
-### Tasks Management
-
-![Tasks](screenshots/tasks.PNG)
-
-### Profile
-
-![Profile](screenshots/profile.PNG)
-
-The profile page allows users to view and manage their account information.
-
-- View username, email, role, and membership date
-- Update username
-- Change password securely
-- Client-side password confirmation
-- Success and error feedback
-
-### Change Password
-
-![Change Password](screenshots/profile-change-password.PNG)
-
-
-### Swagger API Documentation
-
-![Swagger](screenshots/swagger.PNG)
-
-## 🗺️ Roadmap
-
-### Completed
-
-- [x] Initialize the project structure
-- [x] Build the NestJS backend
-- [x] Configure PostgreSQL with Prisma ORM
-- [x] Implement user authentication with JWT
-- [x] Add role-based authorization
-- [x] Develop Task CRUD operations
-- [x] Create Team management APIs
-- [x] Implement user profile management
-- [x] Implement username update
-- [x] Implement secure password change
-- [x] Configure Swagger API documentation
-- [x] Deploy the backend to Render
-- [x] Deploy the frontend to Vercel
-
-## 💡 Future Improvements
-
-The following features are planned for future releases:
-
-- Email verification
-- Password reset functionality
-- Task deadlines and reminders
-- File attachments for tasks
-- Real-time notifications
-- Activity logs
-- Advanced search and filtering
-- Dark mode
-- Calendar view
-- Docker support for easier deployment
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-See the `LICENSE` file for more information.
-
-## 👨‍💻 Author
-
-**Arif Rezaie**
-
-Junior Full-Stack Developer
-
-- GitHub: https://github.com/arifrezaie4-dev
-
-```
-
-```
+- GitHub: [arifrezaie4-dev](https://github.com/arifrezaie4-dev)
